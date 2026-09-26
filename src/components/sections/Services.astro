@@ -10,11 +10,11 @@ const { services, business } = Astro.props;
 
 <section id="servicios" class="section-space bg-background">
   <div class="site-container">
-    <SectionHeading eyebrow="Barbería en Arequipa" title="Nuestros servicios" description="Cortes precisos y estilos pensados para resaltar tu imagen." />
+    <SectionHeading eyebrow="Barbería en Arequipa" title="Nuestros servicios" description="Elige el servicio que mejor se adapta a tu estilo y reserva una atención personalizada." />
     <p class="mt-5 inline-flex rounded-full border border-border-strong bg-primary-subtle px-3 py-1.5 text-xs text-text-secondary">Consulta precios y disponibilidad al reservar</p>
-    <div class="mt-10 grid gap-5 sm:grid-cols-2 xl:grid-cols-4 xl:gap-6">
+    <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:gap-6">
       {services.map((service) => {
-        const message = `Hola, quisiera consultar/reservar el servicio ${service.name} en ${business.name}.\n\n¿Podrían brindarme información sobre disponibilidad?`;
+        const message = `Hola, quisiera reservar el servicio ${service.name} en ${business.name}.\n\n¿Podrían brindarme información sobre disponibilidad y precio?`;
         return <ServiceCard service={service} bookingUrl={createWhatsAppUrl(business.whatsapp, message)} />;
       })}
     </div>
