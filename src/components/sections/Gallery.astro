@@ -1,4 +1,5 @@
 ---
+import { ChevronLeft, ChevronRight } from '@lucide/astro';
 import type { GalleryItem } from '../../types/gallery';
 import SectionHeading from '../ui/SectionHeading.astro';
 import MediaPlaceholder from '../ui/MediaPlaceholder.astro';
@@ -6,12 +7,31 @@ interface Props { items: GalleryItem[]; businessName: string; }
 const { items, businessName } = Astro.props;
 ---
 
-<section class="section-space border-y border-border bg-background-secondary">
-  <div class="site-container">
-    <SectionHeading eyebrow="Portafolio" title="Resultados que hablan por nosotros" description={`Conoce algunos cortes y acabados realizados en ${businessName}.`} />
-    <div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
+<section id="portafolio" class="section-space border-y border-border bg-background-secondary" aria-label="Portafolio de trabajos">
+  <div class="site-container" data-gallery-carousel>
+    <div class="flex items-end justify-between gap-6">
+      <SectionHeading eyebrow="Portafolio" title="Resultados que hablan por nosotros" description={`Conoce algunos cortes y acabados realizados en ${businessName}.`} />
+
+      <div class="hidden shrink-0 gap-3 sm:flex" aria-label="Controles del carrusel">
+        <button type="button" class="gallery-control focus-outline" data-gallery-previous aria-label="Ver trabajos anteriores" aria-controls="portfolio-carousel">
+          <ChevronLeft size={21} stroke-width={1.8} aria-hidden="true" />
+        </button>
+        <button type="button" class="gallery-control focus-outline" data-gallery-next aria-label="Ver trabajos siguientes" aria-controls="portfolio-carousel">
+          <ChevronRight size={21} stroke-width={1.8} aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+
+    <div
+      id="portfolio-carousel"
+      class="gallery-track focus-outline mt-10"
+      data-gallery-track
+      role="region"
+      aria-label="Trabajos realizados"
+      tabindex="0"
+    >
       {items.map((item, index) => (
-        <article class:list={["group relative overflow-hidden rounded-xl border border-border bg-surface shadow-card transition duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-card-hover", index % 3 === 0 ? "lg:translate-y-5 lg:hover:translate-y-4" : ""]}>
+        <article class:list={["gallery-card group relative shrink-0 snap-start overflow-hidden rounded-xl border border-border bg-surface shadow-card transition duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-card-hover", index % 3 === 0 ? "lg:mt-5" : ""]}>
           {item.image ? <img src={item.image} alt={item.alt} loading="lazy" width="900" height="1100" class="aspect-[4/5] w-full object-cover transition-transform duration-300 group-hover:scale-[1.035]" /> : <MediaPlaceholder label={item.description} class="aspect-[4/5] bg-surface" />}
           <div class="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-90 transition-opacity duration-300 group-hover:opacity-100"></div>
           <div class="absolute inset-x-0 bottom-0 p-5 pt-16 sm:p-6 sm:pt-20"><span class="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">{item.category}</span><h3 class="mt-1 font-heading text-lg font-bold text-text-primary">{item.title}</h3></div>
@@ -20,3 +40,107 @@ const { items, businessName } = Astro.props;
     </div>
   </div>
 </section>
+
+<style>
+  .gallery-track {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    padding-block: 0.25rem 1.75rem;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .gallery-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .gallery-card {
+    flex-basis: 87%;
+  }
+
+  .gallery-control {
+    display: grid;
+    width: 2.75rem;
+    height: 2.75rem;
+    place-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    color: var(--color-text-primary);
+    transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+  }
+
+  .gallery-control:hover:not(:disabled) {
+    border-color: var(--color-border-strong);
+    background: var(--color-primary-subtle);
+    color: var(--color-primary);
+  }
+
+  .gallery-control:disabled {
+    cursor: not-allowed;
+    opacity: 0.35;
+  }
+
+  @media (min-width: 640px) {
+    .gallery-track {
+      gap: 1.25rem;
+    }
+
+    .gallery-card {
+      flex-basis: calc((100% - 1.25rem) / 2);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .gallery-card {
+      flex-basis: calc((100% - 3.75rem) / 4);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gallery-track {
+      scroll-behavior: auto;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-gallery-carousel]').forEach((carousel) => {
+    const track = carousel.querySelector<HTMLElement>('[data-gallery-track]');
+    const previous = carousel.querySelector<HTMLButtonElement>('[data-gallery-previous]');
+    const next = carousel.querySelector<HTMLButtonElement>('[data-gallery-next]');
+
+    if (!track || !previous || !next) return;
+
+    const getScrollAmount = () => {
+      const firstCard = track.querySelector<HTMLElement>('.gallery-card');
+      const gap = Number.parseFloat(window.getComputedStyle(track).columnGap) || 0;
+      return (firstCard?.getBoundingClientRect().width ?? track.clientWidth) + gap;
+    };
+
+    const updateControls = () => {
+      const maximumScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+      previous.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= maximumScroll - 2;
+    };
+
+    const move = (direction: -1 | 1) => {
+      const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+      track.scrollBy({ left: getScrollAmount() * direction, behavior });
+    };
+
+    previous.addEventListener('click', () => move(-1));
+    next.addEventListener('click', () => move(1));
+    track.addEventListener('scroll', updateControls, { passive: true });
+    track.addEventListener('keydown', (event) => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      event.preventDefault();
+      move(event.key === 'ArrowLeft' ? -1 : 1);
+    });
+
+    new ResizeObserver(updateControls).observe(track);
+    updateControls();
+  });
+</script>
