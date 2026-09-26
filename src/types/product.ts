@@ -1,15 +1,20 @@
+export type ProductCategory = 'styling' | 'cuidado' | 'barba' | 'fragancias';
+
 export interface Product {
   id: string;
-  slug: string;
+  slug?: string;
   name: string;
   description: string;
-  price: number | null;
-  currency: 'PEN';
+  image: string;
+  imageAlt?: string;
+  imagePosition?: string;
+  priceLabel: string;
   available: boolean;
-  active: boolean;
+  active?: boolean;
   featured: boolean;
-  order: number;
-  image?: string | null;
+  category: ProductCategory;
+  whatsappMessage?: string;
+  order?: number;
   createdAt?: string;
   updatedAt?: string;
 }

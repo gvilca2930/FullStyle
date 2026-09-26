@@ -14,7 +14,7 @@ const { products, business } = Astro.props;
     <p class="mt-5 inline-flex rounded-full border border-border-strong bg-primary-subtle px-3 py-1.5 text-xs text-text-secondary">Consulta disponibilidad y precio por WhatsApp</p>
     <div class="mt-10 grid gap-5 sm:grid-cols-2 xl:grid-cols-4 xl:gap-6">
       {products.map((product) => {
-        const message = `Hola, quisiera consultar por el producto ${product.name} en ${business.name}.\n\n¿Se encuentra disponible?`;
+        const message = product.whatsappMessage ?? `Hola, quisiera consultar disponibilidad y precio de ${product.name} en ${business.name}.`;
         return <ProductCard product={product} enquiryUrl={createWhatsAppUrl(business.whatsapp, message)} />;
       })}
     </div>
