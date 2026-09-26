@@ -1,0 +1,22 @@
+---
+import type { Service } from '../../types/service';
+import type { Business } from '../../types/business';
+import { createWhatsAppUrl } from '../../utils/whatsapp';
+import SectionHeading from '../ui/SectionHeading.astro';
+import ServiceCard from '../ui/ServiceCard.astro';
+interface Props { services: Service[]; business: Business; }
+const { services, business } = Astro.props;
+---
+
+<section id="servicios" class="section-space bg-background">
+  <div class="site-container">
+    <SectionHeading eyebrow="Barbería en Arequipa" title="Nuestros servicios" description="Cortes precisos y estilos pensados para resaltar tu imagen." />
+    <p class="mt-5 inline-flex rounded-full border border-border-strong bg-primary-subtle px-3 py-1.5 text-xs text-text-secondary">Consulta precios y disponibilidad al reservar</p>
+    <div class="mt-10 grid gap-5 sm:grid-cols-2 xl:grid-cols-4 xl:gap-6">
+      {services.map((service) => {
+        const message = `Hola, quisiera consultar/reservar el servicio ${service.name} en ${business.name}.\n\n¿Podrían brindarme información sobre disponibilidad?`;
+        return <ServiceCard service={service} bookingUrl={createWhatsAppUrl(business.whatsapp, message)} />;
+      })}
+    </div>
+  </div>
+</section>

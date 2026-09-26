@@ -1,0 +1,9 @@
+---
+import { MessageCircle } from '@lucide/astro';
+interface Props { url: string; businessName: string; }
+const { url, businessName } = Astro.props;
+---
+
+<a href={url} target="_blank" rel="noopener noreferrer" class="fixed bottom-5 right-4 z-40 grid size-14 place-items-center rounded-full bg-whatsapp text-text-on-primary shadow-card transition duration-200 hover:-translate-y-1 hover:bg-whatsapp-hover hover:shadow-card-hover focus-outline sm:bottom-7 sm:right-7" aria-label={`Contactar a ${businessName} por WhatsApp`}>
+  <MessageCircle size={26} stroke-width={2.2} aria-hidden="true" />
+</a>

@@ -1,0 +1,58 @@
+---
+import { Menu, X } from '@lucide/astro';
+import type { Business } from '../../types/business';
+import type { NavigationItem } from '../../config/navigation';
+import Brand from '../ui/Brand.astro';
+
+interface Props { business: Business; navigation: NavigationItem[]; bookingUrl: string; }
+const { business, navigation, bookingUrl } = Astro.props;
+---
+
+<header class="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-xl">
+  <nav class="site-container flex h-20 items-center justify-between" aria-label="Navegación principal">
+    <a href="#inicio" class="rounded-sm focus-outline"><Brand name={business.name} logo={business.logo} compact /></a>
+    <div class="hidden items-center gap-7 lg:flex">
+      <ul class="flex items-center gap-6">
+        {navigation.map((item) => (
+          <li><a href={item.href} class="nav-link rounded-sm text-sm font-medium text-text-secondary transition-colors duration-200 hover:text-text-primary focus-outline">{item.label}</a></li>
+        ))}
+      </ul>
+      <a href={bookingUrl} target="_blank" rel="noopener noreferrer" class="button-primary text-sm">Reservar cita</a>
+    </div>
+    <button id="menu-toggle" type="button" class="grid size-11 place-items-center rounded-full border border-border text-text-primary transition duration-200 hover:border-border-strong hover:bg-primary-subtle hover:text-primary focus-outline lg:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menú">
+      <Menu class="menu-open-icon" size={21} aria-hidden="true" />
+      <X class="menu-close-icon hidden" size={21} aria-hidden="true" />
+    </button>
+  </nav>
+  <div id="mobile-menu" class="hidden border-t border-border bg-background-secondary lg:hidden">
+    <div class="site-container py-5">
+      <ul class="grid gap-1">
+        {navigation.map((item) => (
+          <li><a href={item.href} class="mobile-nav-link block rounded-lg px-3 py-3 text-text-secondary transition duration-200 hover:bg-primary-subtle hover:text-primary focus-outline">{item.label}</a></li>
+        ))}
+      </ul>
+      <a href={bookingUrl} target="_blank" rel="noopener noreferrer" class="mobile-nav-link button-primary mt-4 w-full">Reservar cita</a>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('#menu-toggle');
+  const menu = document.querySelector<HTMLElement>('#mobile-menu');
+  const openIcon = toggle?.querySelector('.menu-open-icon');
+  const closeIcon = toggle?.querySelector('.menu-close-icon');
+
+  function setMenu(open: boolean) {
+    if (!toggle || !menu) return;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    menu.classList.toggle('hidden', !open);
+    openIcon?.classList.toggle('hidden', open);
+    closeIcon?.classList.toggle('hidden', !open);
+  }
+
+  toggle?.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
+  document.querySelectorAll('.mobile-nav-link').forEach((link) => link.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', (event) => { if (event.key === 'Escape') { setMenu(false); toggle?.focus(); } });
+  window.addEventListener('resize', () => { if (window.innerWidth >= 1024) setMenu(false); });
+</script>

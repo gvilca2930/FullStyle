@@ -1,0 +1,27 @@
+---
+import { Crosshair, Sparkles, UserRound, BadgeCheck } from '@lucide/astro';
+interface Props { businessName: string; }
+const { businessName } = Astro.props;
+const benefits = [
+  { title: 'Precisión', description: 'Atención cuidadosa en líneas, transiciones y contornos.', icon: Crosshair },
+  { title: 'Estilo', description: 'Propuestas pensadas para acompañar tu imagen personal.', icon: Sparkles },
+  { title: 'Atención personalizada', description: 'Escuchamos lo que buscas antes de comenzar.', icon: UserRound },
+  { title: 'Acabado profesional', description: 'Cuidamos cada detalle hasta el resultado final.', icon: BadgeCheck },
+];
+---
+
+<section class="section-space relative overflow-hidden border-y border-border bg-background-secondary">
+  <div class="accent-orb" aria-hidden="true"></div>
+  <div class="site-container relative grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+    <div>
+      <p class="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-primary">Nuestra especialidad</p>
+      <h2 class="font-heading text-3xl font-bold tracking-tight text-text-primary sm:text-4xl lg:text-5xl">Especialistas en tu estilo</h2>
+      <p class="mt-5 max-w-xl text-base leading-7 text-text-secondary sm:text-lg">En {businessName} nos especializamos en cortes de cabello y barbería, cuidando cada detalle para conseguir un resultado acorde a tu estilo.</p>
+    </div>
+    <div class="grid gap-px overflow-hidden rounded-xl border border-border bg-border shadow-card sm:grid-cols-2">
+      {benefits.map(({ title, description, icon: Icon }) => (
+        <article class="bg-surface p-6 transition-colors duration-200 hover:bg-surface-elevated sm:p-7"><Icon class="text-primary" size={24} stroke-width={1.7} aria-hidden="true" /><h3 class="mt-5 font-heading text-lg font-bold text-text-primary">{title}</h3><p class="mt-2 text-sm leading-6 text-text-secondary">{description}</p></article>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,37 @@
+---
+import { ArrowDown, Check, MessageCircle, Scissors } from '@lucide/astro';
+import type { Business } from '../../types/business';
+import MediaPlaceholder from '../ui/MediaPlaceholder.astro';
+interface Props { business: Business; bookingUrl: string; }
+const { business, bookingUrl } = Astro.props;
+const benefits = ['Cortes especializados', 'Atención personalizada', 'Estilo profesional'];
+---
+
+<section id="inicio" class="relative overflow-hidden border-b border-border bg-background">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="site-container relative grid items-center gap-12 py-14 sm:py-16 lg:min-h-[calc(100svh-5rem)] lg:grid-cols-[1.02fr_0.98fr] lg:gap-14 lg:py-12">
+    <div class="relative z-10">
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-border-strong bg-primary-subtle px-3 py-2 text-xs font-bold uppercase tracking-[0.18em] text-primary">
+        <Scissors size={15} aria-hidden="true" /> Barbería profesional en Arequipa
+      </div>
+      <p class="font-heading text-sm font-bold tracking-[0.42em] text-text-muted sm:text-base">{business.name}</p>
+      <h1 class="mt-4 max-w-3xl font-heading text-4xl font-black leading-[1.04] tracking-tight text-text-primary sm:text-6xl lg:text-[clamp(3.25rem,7vh,5rem)]">{business.slogan}</h1>
+      <p class="mt-6 max-w-xl text-base leading-8 text-text-secondary sm:text-lg">{business.description}</p>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <a href={bookingUrl} target="_blank" rel="noopener noreferrer" class="button-primary"><MessageCircle size={18} aria-hidden="true" />Reservar por WhatsApp</a>
+        <a href="#servicios" class="button-secondary">Ver servicios<ArrowDown size={18} aria-hidden="true" /></a>
+      </div>
+      <ul class="mt-8 flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:flex-wrap sm:gap-x-6">
+        {benefits.map((benefit) => <li class="flex items-center gap-2 text-sm text-text-secondary"><span class="grid size-5 place-items-center rounded-full bg-primary-subtle text-primary"><Check size={12} stroke-width={3} aria-hidden="true" /></span>{benefit}</li>)}
+      </ul>
+    </div>
+    <div class="relative min-h-[430px] sm:min-h-[560px] lg:h-[min(72vh,46rem)] lg:min-h-[34rem]">
+      <div class="absolute inset-5 translate-x-3 translate-y-3 rounded-xl border border-border-strong"></div>
+      {business.heroImage ? <img src={business.heroImage} alt={`Interior de la barbería ${business.name} en Arequipa`} width="1080" height="1920" fetchpriority="high" class="absolute inset-0 h-full w-full rounded-xl border border-border bg-surface object-cover shadow-card" /> : <MediaPlaceholder label="Imagen principal del local" class="relative min-h-[430px] rounded-xl border border-border bg-surface lg:h-full lg:min-h-0" />}
+      <div class="absolute -bottom-3 left-4 rounded-xl border border-border-strong bg-background/90 px-5 py-4 shadow-card backdrop-blur sm:-left-5 sm:px-6">
+        <p class="text-xs uppercase tracking-[0.2em] text-text-muted">Especialidad</p>
+        <p class="mt-1 font-heading text-lg font-bold text-text-primary">Cortes & barbería</p>
+      </div>
+    </div>
+  </div>
+</section>

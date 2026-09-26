@@ -1,0 +1,69 @@
+---
+import '../styles/global.css';
+import type { Business } from '../types/business';
+
+interface Props { title: string; description: string; business: Business; }
+const { title, description, business } = Astro.props;
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : null;
+const canonicalHref = canonical?.toString() ?? null;
+const socialUrls = business.socialNetworks.filter(({ url }) => Boolean(url)).map(({ url }) => url);
+const socialImage = business.heroImage && Astro.site ? new URL(business.heroImage, Astro.site).toString() : null;
+const logoUrl = business.logo && Astro.site ? new URL(business.logo, Astro.site).toString() : null;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'HairSalon',
+  '@id': canonical ? `${canonical.origin}/#business` : undefined,
+  name: business.name,
+  description,
+  ...(canonical ? { url: canonical.origin } : {}),
+  ...(logoUrl ? { logo: logoUrl } : {}),
+  ...(socialImage ? { image: socialImage } : {}),
+  telephone: business.phone,
+  email: business.email,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: business.locality,
+    addressRegion: business.region,
+    addressCountry: business.countryCode,
+  },
+  areaServed: { '@type': 'City', name: business.locality },
+  currenciesAccepted: 'PEN',
+  priceRange: '$$',
+  ...(socialUrls.length ? { sameAs: socialUrls } : {}),
+};
+---
+
+<!doctype html>
+<html lang="es" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    {canonicalHref && <link rel="canonical" href={canonicalHref} />}
+    {canonicalHref && <link rel="alternate" hreflang="es-PE" href={canonicalHref} />}
+    <link rel="icon" type="image/webp" href="/images/logo.webp" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#090909" />
+    <meta name="geo.region" content="PE-ARE" />
+    <meta name="geo.placename" content="Arequipa" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_PE" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:site_name" content={business.name} />
+    {socialImage && <meta property="og:image" content={socialImage} />}
+    {socialImage && <meta property="og:image:alt" content={`Interior de ${business.name}, barbería en Arequipa`} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {socialImage && <meta name="twitter:image" content={socialImage} />}
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body class="min-w-0 overflow-x-hidden bg-background text-text-primary antialiased">
+    <slot />
+  </body>
+</html>

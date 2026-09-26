@@ -1,0 +1,47 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/layout/Navbar.astro';
+import Footer from '../components/layout/Footer.astro';
+import WhatsAppFloat from '../components/layout/WhatsAppFloat.astro';
+import Hero from '../components/sections/Hero.astro';
+import Services from '../components/sections/Services.astro';
+import Specialty from '../components/sections/Specialty.astro';
+import Products from '../components/sections/Products.astro';
+import Gallery from '../components/sections/Gallery.astro';
+import About from '../components/sections/About.astro';
+import Location from '../components/sections/Location.astro';
+import Contact from '../components/sections/Contact.astro';
+import FinalCta from '../components/sections/FinalCta.astro';
+import { business } from '../config/business';
+import { navigation } from '../config/navigation';
+import { localServicesRepository } from '../repositories/localServicesRepository';
+import { localProductsRepository } from '../repositories/localProductsRepository';
+import { localGalleryRepository } from '../repositories/localGalleryRepository';
+import { createWhatsAppUrl } from '../utils/whatsapp';
+
+const [services, products, gallery] = await Promise.all([
+  localServicesRepository.getActive(),
+  localProductsRepository.getActive(),
+  localGalleryRepository.getVisible(),
+]);
+const generalWhatsAppUrl = createWhatsAppUrl(business.whatsapp, `Hola, quisiera información sobre los servicios de ${business.name} en Arequipa.`);
+const title = `${business.name} | Barbería profesional en Arequipa`;
+const description = `Barbería en Arequipa especializada en cortes, fades y estilos personalizados. Conoce los trabajos de ${business.name} y reserva por WhatsApp.`;
+---
+
+<Layout {title} {description} {business}>
+  <Navbar {business} {navigation} bookingUrl={generalWhatsAppUrl} />
+  <main>
+    <Hero {business} bookingUrl={generalWhatsAppUrl} />
+    <Services {services} {business} />
+    <Specialty businessName={business.name} />
+    <Products {products} {business} />
+    <Gallery items={gallery} businessName={business.name} />
+    <About {business} />
+    <Location {business} />
+    <Contact {business} whatsappUrl={generalWhatsAppUrl} />
+    <FinalCta whatsappUrl={generalWhatsAppUrl} />
+  </main>
+  <Footer {business} {navigation} />
+  <WhatsAppFloat url={generalWhatsAppUrl} businessName={business.name} />
+</Layout>

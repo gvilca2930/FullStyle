@@ -1,0 +1,22 @@
+---
+import type { Product } from '../../types/product';
+import type { Business } from '../../types/business';
+import { createWhatsAppUrl } from '../../utils/whatsapp';
+import SectionHeading from '../ui/SectionHeading.astro';
+import ProductCard from '../ui/ProductCard.astro';
+interface Props { products: Product[]; business: Business; }
+const { products, business } = Astro.props;
+---
+
+<section id="productos" class="section-space bg-background">
+  <div class="site-container">
+    <SectionHeading eyebrow="Cuidado diario" title="Productos profesionales" description="Una selección para mantener tu estilo y cuidado personal también en casa." />
+    <p class="mt-5 inline-flex rounded-full border border-border-strong bg-primary-subtle px-3 py-1.5 text-xs text-text-secondary">Consulta disponibilidad y precio por WhatsApp</p>
+    <div class="mt-10 grid gap-5 sm:grid-cols-2 xl:grid-cols-4 xl:gap-6">
+      {products.map((product) => {
+        const message = `Hola, quisiera consultar por el producto ${product.name} en ${business.name}.\n\n¿Se encuentra disponible?`;
+        return <ProductCard product={product} enquiryUrl={createWhatsAppUrl(business.whatsapp, message)} />;
+      })}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,14 @@
+---
+interface Props { name: string; logo?: string | null; compact?: boolean; }
+const { name, logo = null, compact = false } = Astro.props;
+---
+
+<span class="inline-flex items-center gap-3" aria-label={name}>
+  {logo ? (
+    <img src={logo} alt={`Logo de ${name}`} width="160" height="120" class:list={["w-auto object-contain", compact ? "h-12" : "h-16"]} />
+  ) : (
+    <span class:list={["font-heading font-black tracking-[0.16em] text-text-primary", compact ? "text-lg" : "text-xl sm:text-2xl"]}>
+      {name}
+    </span>
+  )}
+</span>

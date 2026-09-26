@@ -1,0 +1,22 @@
+---
+import type { GalleryItem } from '../../types/gallery';
+import SectionHeading from '../ui/SectionHeading.astro';
+import MediaPlaceholder from '../ui/MediaPlaceholder.astro';
+interface Props { items: GalleryItem[]; businessName: string; }
+const { items, businessName } = Astro.props;
+---
+
+<section class="section-space border-y border-border bg-background-secondary">
+  <div class="site-container">
+    <SectionHeading eyebrow="Portafolio" title="Resultados que hablan por nosotros" description={`Conoce algunos cortes y acabados realizados en ${businessName}.`} />
+    <div class="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-4">
+      {items.map((item, index) => (
+        <article class:list={["group relative overflow-hidden rounded-xl border border-border bg-surface shadow-card transition duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-card-hover", index % 3 === 0 ? "lg:translate-y-5 lg:hover:translate-y-4" : ""]}>
+          {item.image ? <img src={item.image} alt={item.alt} loading="lazy" width="900" height="1100" class="aspect-[4/5] w-full object-cover transition-transform duration-300 group-hover:scale-[1.035]" /> : <MediaPlaceholder label={item.description} class="aspect-[4/5] bg-surface" />}
+          <div class="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent opacity-90 transition-opacity duration-300 group-hover:opacity-100"></div>
+          <div class="absolute inset-x-0 bottom-0 p-5 pt-16 sm:p-6 sm:pt-20"><span class="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">{item.category}</span><h3 class="mt-1 font-heading text-lg font-bold text-text-primary">{item.title}</h3></div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

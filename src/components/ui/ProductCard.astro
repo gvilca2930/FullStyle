@@ -1,0 +1,24 @@
+---
+import { ArrowUpRight, Package, Star } from '@lucide/astro';
+import type { Product } from '../../types/product';
+import { formatPrice } from '../../utils/formatting';
+import MediaPlaceholder from './MediaPlaceholder.astro';
+interface Props { product: Product; enquiryUrl: string; }
+const { product, enquiryUrl } = Astro.props;
+---
+
+<article class="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-card transition duration-300 hover:-translate-y-1 hover:border-border-strong hover:shadow-card-hover">
+  <div class="relative overflow-hidden border-b border-border">
+    {product.image ? <img src={product.image} alt={product.name} loading="lazy" width="800" height="800" class="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-[1.025]" /> : <MediaPlaceholder label="Imagen del producto" class="aspect-[4/3] bg-background-secondary" />}
+    {product.featured && <span class="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-text-on-primary"><Star size={11} fill="currentColor" aria-hidden="true" />Destacado</span>}
+  </div>
+  <div class="flex flex-1 flex-col p-5 sm:p-6">
+    <div class="flex items-center justify-between gap-3">
+      <span class:list={["inline-flex items-center gap-1.5 text-xs font-semibold", product.available ? "text-success" : "text-text-muted"]}><Package size={14} aria-hidden="true" />{product.available ? 'Disponible' : 'Consultar stock'}</span>
+      <span class="font-heading text-sm font-bold text-primary">{product.price === null ? 'Consultar precio' : formatPrice(product.price, product.currency)}</span>
+    </div>
+    <h3 class="mt-5 font-heading text-xl font-bold text-text-primary">{product.name}</h3>
+    <p class="mt-2 flex-1 text-sm leading-6 text-text-secondary">{product.description}</p>
+    <a href={enquiryUrl} target="_blank" rel="noopener noreferrer" class="mt-6 inline-flex items-center justify-between border-t border-border pt-4 text-sm font-bold text-text-primary transition-colors duration-200 group-hover:text-primary focus-outline">Consultar <ArrowUpRight size={17} aria-hidden="true" /></a>
+  </div>
+</article>

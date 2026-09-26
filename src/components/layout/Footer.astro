@@ -1,0 +1,45 @@
+---
+import { Camera, UsersRound, Music2 } from '@lucide/astro';
+import type { Business, SocialNetworkKey } from '../../types/business';
+import type { NavigationItem } from '../../config/navigation';
+import { createTelUrl } from '../../utils/formatting';
+import Brand from '../ui/Brand.astro';
+
+interface Props { business: Business; navigation: NavigationItem[]; }
+const { business, navigation } = Astro.props;
+const visibleSocials = business.socialNetworks.filter(({ url }) => Boolean(url));
+const socialIcons: Record<SocialNetworkKey, typeof Camera> = { instagram: Camera, facebook: UsersRound, tiktok: Music2 };
+---
+
+<footer id="contacto" class="border-t border-border bg-background py-14 sm:py-18">
+  <div class="site-container grid gap-12 md:grid-cols-2 lg:grid-cols-[1.2fr_0.8fr_1fr]">
+    <div>
+      <a href="#inicio" class="inline-flex rounded-sm focus-outline"><Brand name={business.name} logo={business.logo} /></a>
+      <p class="mt-4 max-w-sm text-text-secondary">{business.slogan}</p>
+      {visibleSocials.length > 0 && (
+        <div class="mt-6 flex gap-3">
+          {visibleSocials.map((social) => {
+            const Icon = socialIcons[social.id];
+            return <a href={social.url!} target="_blank" rel="noopener noreferrer" aria-label={`${business.name} en ${social.label}`} class="grid size-10 place-items-center rounded-full border border-border text-text-secondary transition duration-200 hover:border-border-strong hover:bg-primary-subtle hover:text-primary focus-outline"><Icon size={18} aria-hidden="true" /></a>;
+          })}
+        </div>
+      )}
+    </div>
+    <div>
+      <h2 class="text-sm font-bold uppercase tracking-[0.18em] text-text-primary">Navegación</h2>
+      <ul class="mt-5 grid grid-cols-2 gap-x-5 gap-y-3 text-sm text-text-secondary">
+        {navigation.map((item) => <li><a href={item.href} class="rounded-sm transition-colors duration-200 hover:text-primary focus-outline">{item.label}</a></li>)}
+      </ul>
+    </div>
+    <div>
+      <h2 class="text-sm font-bold uppercase tracking-[0.18em] text-text-primary">Contacto</h2>
+      <div class="mt-5 grid gap-3 text-sm text-text-secondary">
+        <a href={createTelUrl(business.phone)} class="rounded-sm transition-colors duration-200 hover:text-primary focus-outline">{business.phone}</a>
+        <a href={`mailto:${business.email}`} class="break-all rounded-sm transition-colors duration-200 hover:text-primary focus-outline">{business.email}</a>
+      </div>
+    </div>
+  </div>
+  <div class="site-container mt-12 border-t border-border pt-6 text-sm text-text-muted">
+    <p>© {new Date().getFullYear()} {business.name}. Todos los derechos reservados.</p>
+  </div>
+</footer>
