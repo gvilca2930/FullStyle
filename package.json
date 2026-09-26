@@ -10,9 +10,11 @@
     "check": "astro check"
   },
   "dependencies": {
+    "@iconify-json/simple-icons": "^1.2.97",
+    "@lucide/astro": "^1.47.0",
     "@tailwindcss/vite": "^4.1.13",
     "astro": "^7.3.3",
-    "@lucide/astro": "^1.47.0",
+    "astro-icon": "^1.2.0",
     "tailwindcss": "^4.1.13"
   },
   "devDependencies": {
