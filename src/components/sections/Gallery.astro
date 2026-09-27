@@ -1,5 +1,5 @@
 ---
-import { ChevronLeft, ChevronRight } from '@lucide/astro';
+import { Icon } from 'astro-icon/components';
 import type { GalleryItem } from '../../types/gallery';
 import SectionHeading from '../ui/SectionHeading.astro';
 import MediaPlaceholder from '../ui/MediaPlaceholder.astro';
@@ -14,10 +14,10 @@ const { items, businessName } = Astro.props;
 
       <div class="hidden shrink-0 gap-3 sm:flex" aria-label="Controles del carrusel">
         <button type="button" class="gallery-control focus-outline" data-gallery-previous aria-label="Ver trabajos anteriores" aria-controls="portfolio-carousel">
-          <ChevronLeft size={21} stroke-width={1.8} aria-hidden="true" />
+          <Icon name="lucide:chevron-left" size={21} stroke-width={1.8} aria-hidden="true" />
         </button>
         <button type="button" class="gallery-control focus-outline" data-gallery-next aria-label="Ver trabajos siguientes" aria-controls="portfolio-carousel">
-          <ChevronRight size={21} stroke-width={1.8} aria-hidden="true" />
+          <Icon name="lucide:chevron-right" size={21} stroke-width={1.8} aria-hidden="true" />
         </button>
       </div>
     </div>

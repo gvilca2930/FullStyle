@@ -1,5 +1,5 @@
 ---
-import { Clock3, Scissors } from '@lucide/astro';
+import { Icon } from 'astro-icon/components';
 import type { Business } from '../../types/business';
 interface Props { business: Business; }
 const { business } = Astro.props;
@@ -14,11 +14,11 @@ const hours = business.openingHours.toSorted((a, b) => a.order - b.order);
       <div class="absolute inset-x-0 bottom-0 p-7 sm:p-9"><p class="text-xs font-bold uppercase tracking-[0.22em] text-primary">Atención personalizada</p><p class="mt-2 font-heading text-2xl font-bold text-text-primary">Tu estilo, trabajado al detalle</p></div>
     </div>
     <div class="rounded-xl border border-border bg-surface p-7 shadow-card sm:p-10">
-      <Scissors class="text-primary" size={30} stroke-width={1.6} aria-hidden="true" />
+      <Icon name="lucide:scissors" class="text-primary" size={30} stroke-width={1.6} aria-hidden="true" />
       <p class="mt-8 text-xs font-bold uppercase tracking-[0.24em] text-primary">Nosotros</p>
       <h2 class="mt-3 font-heading text-4xl font-black tracking-[0.12em] text-text-primary sm:text-5xl">{business.name}</h2>
       <p class="mt-6 text-base leading-8 text-text-secondary">En {business.name} combinamos técnica, asesoría y atención personalizada. Nos especializamos en cortes y estilos adaptados a cada cliente de Arequipa, cuidando cada detalle hasta el acabado final.</p>
-      <div class="mt-9 flex items-center gap-3"><div class="grid size-11 place-items-center rounded-xl bg-primary-subtle text-primary"><Clock3 size={22} aria-hidden="true" /></div><div><p class="text-xs font-bold uppercase tracking-[0.2em] text-primary">Atención</p><h3 class="font-heading text-2xl font-bold text-text-primary">Horarios</h3></div></div>
+      <div class="mt-9 flex items-center gap-3"><div class="grid size-11 place-items-center rounded-xl bg-primary-subtle text-primary"><Icon name="lucide:clock-3" size={22} aria-hidden="true" /></div><div><p class="text-xs font-bold uppercase tracking-[0.2em] text-primary">Atención</p><h3 class="font-heading text-2xl font-bold text-text-primary">Horarios</h3></div></div>
       <dl class="mt-7 divide-y divide-border border-y border-border">
         {hours.map((entry) => <div class="flex items-center justify-between gap-6 py-5"><dt class="font-medium text-text-primary">{entry.days}</dt><dd class:list={["text-right text-sm font-semibold", entry.closed ? "text-text-muted" : "text-primary"]}>{entry.hours}</dd></div>)}
       </dl>

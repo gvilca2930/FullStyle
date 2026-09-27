@@ -1,12 +1,12 @@
 ---
-import { Image } from '@lucide/astro';
+import { Icon } from 'astro-icon/components';
 interface Props { label: string; class?: string; }
 const { label, class: className = '' } = Astro.props;
 ---
 
 <div class:list={["placeholder-grid flex items-center justify-center overflow-hidden", className]} role="img" aria-label={label}>
   <div class="relative z-10 flex flex-col items-center gap-3 text-center text-text-muted">
-    <Image size={24} stroke-width={1.5} aria-hidden="true" />
+    <Icon name="lucide:image" size={24} stroke-width={1.5} aria-hidden="true" />
     <span class="text-xs font-semibold uppercase tracking-[0.18em]">{label}</span>
   </div>
 </div>

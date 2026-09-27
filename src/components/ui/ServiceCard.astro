@@ -1,5 +1,5 @@
 ---
-import { ArrowUpRight, Clock, Scissors, Star } from '@lucide/astro';
+import { Icon } from 'astro-icon/components';
 import type { Service } from '../../types/service';
 import { formatPrice } from '../../utils/formatting';
 import MediaPlaceholder from './MediaPlaceholder.astro';
@@ -11,19 +11,19 @@ const priceText = service.price === null ? service.priceLabel : formatPrice(serv
 ---
 
 <article class:list={["group relative flex h-full flex-col overflow-hidden rounded-xl border bg-surface shadow-card transition duration-300 hover:-translate-y-1 hover:shadow-card-hover", service.featured ? "border-border-strong" : "border-border hover:border-border-strong"]}>
-  {service.featured && <span class="absolute right-4 top-4 z-10 inline-flex items-center gap-1.5 rounded-full bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-text-on-primary"><Star size={11} fill="currentColor" aria-hidden="true" />Destacado</span>}
+  {service.featured && <span class="absolute right-4 top-4 z-10 inline-flex items-center gap-1.5 rounded-full bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-text-on-primary"><Icon name="lucide:star" size={11} fill="currentColor" aria-hidden="true" />Destacado</span>}
   <div class="relative h-40 overflow-hidden border-b border-border sm:h-44">
     {imageSource ? <img src={imageSource} alt={service.imageAlt} loading="lazy" width="800" height="450" style={`object-position: ${imagePosition};`} class="h-full w-full object-cover opacity-80 transition duration-300 group-hover:scale-[1.02] group-hover:opacity-90" /> : <MediaPlaceholder label="Imagen del servicio" class="h-full bg-background-secondary" />}
     <div class="absolute inset-0 bg-gradient-to-t from-surface/60 to-transparent" aria-hidden="true"></div>
   </div>
   <div class="flex flex-1 flex-col p-5 sm:p-6">
     <div class="flex items-start justify-between gap-4">
-      <div class="grid size-10 shrink-0 place-items-center rounded-xl bg-primary-subtle text-primary"><Scissors size={19} aria-hidden="true" /></div>
+      <div class="grid size-10 shrink-0 place-items-center rounded-xl bg-primary-subtle text-primary"><Icon name="lucide:scissors" size={19} aria-hidden="true" /></div>
       <p class="pt-2 text-right text-xs font-medium text-primary/75 sm:text-sm">{priceText}</p>
     </div>
     <h3 class="mt-5 font-heading text-xl font-bold text-text-primary">{service.name}</h3>
     <p class="mt-2 flex-1 text-sm leading-6 text-text-secondary">{service.description}</p>
-    {service.duration && <p class="mt-4 inline-flex items-center gap-2 text-xs font-medium text-text-muted"><Clock size={15} aria-hidden="true" />Duración aproximada: {service.duration}</p>}
-    <a href={bookingUrl} target="_blank" rel="noopener noreferrer" aria-label={`Reservar ${service.name} por WhatsApp`} class="mt-6 inline-flex items-center justify-center gap-2 rounded-full border border-border px-4 py-3 text-sm font-bold text-text-primary transition duration-200 hover:border-border-strong hover:bg-primary-subtle hover:text-primary focus-outline">Reservar <ArrowUpRight size={17} aria-hidden="true" /></a>
+    {service.duration && <p class="mt-4 inline-flex items-center gap-2 text-xs font-medium text-text-muted"><Icon name="lucide:clock" size={15} aria-hidden="true" />Duración aproximada: {service.duration}</p>}
+    <a href={bookingUrl} target="_blank" rel="noopener noreferrer" aria-label={`Reservar ${service.name} por WhatsApp`} class="mt-6 inline-flex items-center justify-center gap-2 rounded-full border border-border px-4 py-3 text-sm font-bold text-text-primary transition duration-200 hover:border-border-strong hover:bg-primary-subtle hover:text-primary focus-outline">Reservar <Icon name="lucide:arrow-up-right" size={17} aria-hidden="true" /></a>
   </div>
 </article>

@@ -1,5 +1,5 @@
 ---
-import { MapPin, Navigation } from '@lucide/astro';
+import { Icon } from 'astro-icon/components';
 import type { Business } from '../../types/business';
 interface Props { business: Business; }
 const { business } = Astro.props;
@@ -11,11 +11,11 @@ const hasExactLocation = Boolean(business.mapsUrl || business.mapsEmbedUrl);
     <div class="flex flex-col justify-center">
       <p class="mb-3 text-xs font-bold uppercase tracking-[0.24em] text-primary">Ubicación</p>
       <h2 class="font-heading text-3xl font-bold text-text-primary sm:text-4xl lg:text-5xl">Visítanos</h2>
-      <div class="mt-7 flex items-start gap-4"><div class="grid size-11 shrink-0 place-items-center rounded-xl bg-primary-subtle text-primary"><MapPin size={22} aria-hidden="true" /></div><div><p class="font-semibold text-text-primary">{business.address}</p><p class="mt-1 text-sm leading-6 text-text-secondary">{hasExactLocation ? `Te esperamos en ${business.name}.` : 'Solicita la ubicación exacta al reservar tu cita.'}</p></div></div>
-      {business.mapsUrl && <a href={business.mapsUrl} target="_blank" rel="noopener noreferrer" class="button-secondary mt-7 self-start"><Navigation size={17} aria-hidden="true" />Cómo llegar</a>}
+      <div class="mt-7 flex items-start gap-4"><div class="grid size-11 shrink-0 place-items-center rounded-xl bg-primary-subtle text-primary"><Icon name="lucide:map-pin" size={22} aria-hidden="true" /></div><div><p class="font-semibold text-text-primary">{business.address}</p><p class="mt-1 text-sm leading-6 text-text-secondary">{hasExactLocation ? `Te esperamos en ${business.name}.` : 'Solicita la ubicación exacta al reservar tu cita.'}</p></div></div>
+      {business.mapsUrl && <a href={business.mapsUrl} target="_blank" rel="noopener noreferrer" class="button-secondary mt-7 self-start"><Icon name="lucide:navigation" size={17} aria-hidden="true" />Cómo llegar</a>}
     </div>
     <div class="min-h-72 overflow-hidden rounded-xl border border-border bg-surface shadow-card">
-      {business.mapsEmbedUrl ? <iframe src={business.mapsEmbedUrl} title={`Mapa de ${business.name}`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="h-full min-h-80 w-full border-0"></iframe> : <div class="placeholder-map grid h-full min-h-72 place-items-center p-8 text-center"><div><MapPin class="mx-auto text-primary" size={38} stroke-width={1.4} aria-hidden="true" /><p class="mt-4 font-heading text-2xl font-bold text-text-primary">Arequipa, Perú</p><p class="mt-2 text-sm text-text-secondary">Contáctanos para recibir la dirección exacta.</p></div></div>}
+      {business.mapsEmbedUrl ? <iframe src={business.mapsEmbedUrl} title={`Mapa de ${business.name}`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="h-full min-h-80 w-full border-0"></iframe> : <div class="placeholder-map grid h-full min-h-72 place-items-center p-8 text-center"><div><Icon name="lucide:map-pin" class="mx-auto text-primary" size={38} stroke-width={1.4} aria-hidden="true" /><p class="mt-4 font-heading text-2xl font-bold text-text-primary">Arequipa, Perú</p><p class="mt-2 text-sm text-text-secondary">Contáctanos para recibir la dirección exacta.</p></div></div>}
     </div>
   </div>
 </section>

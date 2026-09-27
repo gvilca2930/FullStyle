@@ -1,5 +1,5 @@
 ---
-import { Menu, X } from '@lucide/astro';
+import { Icon } from 'astro-icon/components';
 import type { Business } from '../../types/business';
 import type { NavigationItem } from '../../config/navigation';
 import Brand from '../ui/Brand.astro';
@@ -20,8 +20,8 @@ const { business, navigation, bookingUrl } = Astro.props;
       <a href={bookingUrl} target="_blank" rel="noopener noreferrer" class="button-primary text-sm">Reservar cita</a>
     </div>
     <button id="menu-toggle" type="button" class="grid size-11 place-items-center rounded-full border border-border text-text-primary transition duration-200 hover:border-border-strong hover:bg-primary-subtle hover:text-primary focus-outline lg:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Abrir menú">
-      <Menu class="menu-open-icon" size={21} aria-hidden="true" />
-      <X class="menu-close-icon hidden" size={21} aria-hidden="true" />
+      <Icon name="lucide:menu" class="menu-open-icon" size={21} aria-hidden="true" />
+      <Icon name="lucide:x" class="menu-close-icon hidden" size={21} aria-hidden="true" />
     </button>
   </nav>
   <div id="mobile-menu" class="hidden border-t border-border bg-background-secondary lg:hidden">
